@@ -1,0 +1,5 @@
+01-add-version-to-Makefile.diff
+02-add-soname.diff
+03-manpage-hyphens.diff
+04-manpage-dir.diff
+05-destdir-pkgconfig.diff

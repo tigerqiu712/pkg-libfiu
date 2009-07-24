@@ -1,0 +1,10 @@
+README.Debian for libfiu
+========================
+
+The libfiuX binary package is provided for the benefit of other packages that
+can use it in their testsuites (along with all "local" usage, etc.)
+
+It is not expected that a binary packages will exist in the archive with a
+binary dependency on libfiuX; indeed, it is probably a bug if they do.
+
+  -- Chris Lamb <lamby@debian.org>  Thu, 23 Jul 2009 16:27:55 +0100

@@ -1,0 +1,54 @@
+Source: libfiu
+Section: libs
+Priority: optional
+Maintainer: Chris Lamb <lamby@debian.org>
+Build-Depends: debhelper (>= 7), python-dev, python-docutils, quilt
+Standards-Version: 3.8.2
+Homepage: http://blitiri.com.ar/p/libfiu/
+Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-libfiu.git
+Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-libfiu.git
+
+Package: libfiu0
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: userspace fault injection framework
+ libfiu is a C library for fault injection. It provides functions to mark
+ "points of failure" inside your code (the "core API"), and functions to
+ enable/disable the failure of those points (the "control API").
+ .
+ This package contains the libfiu shared library. To perform fault injection,
+ you will require the "libfiu-dev" package.
+
+Package: fiu-utils
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, libfiu0 (= ${binary:Version})
+Description: userspace fault injection framework (utilities)
+ libfiu is a C library for fault injection. It provides functions to mark
+ "points of failure" inside your code (the "core API"), and functions to
+ enable/disable the failure of those points (the "control API").
+ .
+ This package contains the fiu-run, fiu-ls and fiu-ctrl utilities.
+
+Package: libfiu-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, libfiu0 (= ${binary:Version})
+Description: userspace fault injection framework (development libraries)
+ libfiu is a C library for fault injection. It provides functions to mark
+ "points of failure" inside your code (the "core API"), and functions to
+ enable/disable the failure of those points (the "control API").
+ .
+ This package contains the development libraries and documentation in HTML and
+ reStructuredText formats.
+
+Package: python-fiu
+Section: python
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}, libfiu0 (= ${binary:Version})
+Description: userspace fault injection framework (Python bindings)
+ libfiu is a C library for fault injection. It provides functions to mark
+ "points of failure" inside your code (the "core API"), and functions to
+ enable/disable the failure of those points (the "control API").
+ .
+ This package contains Python bindings to libfiu.

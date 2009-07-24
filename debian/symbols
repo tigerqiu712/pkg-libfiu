@@ -1,0 +1,10 @@
+libfiu.so.0 libfiu0 #MINVER#
+ fiu_disable@Base 0.12
+ fiu_enable@Base 0.12
+ fiu_enable_external@Base 0.12
+ fiu_enable_random@Base 0.12
+ fiu_fail@Base 0.12
+ fiu_failinfo@Base 0.12
+ fiu_init@Base 0.12
+ fiu_rc_fifo@Base 0.12
+ rec_count@Base 0.12
