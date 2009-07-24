@@ -3,3 +3,4 @@
 03-manpage-hyphens.diff
 04-manpage-dir.diff
 05-destdir-pkgconfig.diff
+06-plibpath.diff

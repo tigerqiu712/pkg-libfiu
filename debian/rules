@@ -16,7 +16,7 @@ override_dh_auto_build: $(DOCS)
 	cd bindings/python && python setup.py build
 
 override_dh_auto_install:
-	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr
+	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr PLIBPATH=/usr/lib/fiu
 	cd bindings/python && python setup.py install --root=$(CURDIR)/debian/python-fiu --no-compile -O0 --install-layout=deb
 
 override_dh_compress:
