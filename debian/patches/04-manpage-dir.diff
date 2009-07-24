@@ -54,7 +54,7 @@ index 3943711..17bdde7 100644
 -	$(INSTALL) -d $(PREFIX)/man/man1
 -	$(INSTALL) -m 0644 fiu-ctrl.1 $(PREFIX)/man/man1/
 -	$(INSTALL) -m 0644 fiu-ls.1 $(PREFIX)/man/man1/
-+	$(INSTALL) -d $(PREFIX)/shared/man/man1
++	$(INSTALL) -d $(PREFIX)/share/man/man1
 +	$(INSTALL) -m 0644 fiu-ctrl.1 $(PREFIX)/share/man/man1/
 +	$(INSTALL) -m 0644 fiu-ls.1 $(PREFIX)/share/man/man1/
  
