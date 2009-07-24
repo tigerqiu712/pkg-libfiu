@@ -1,1 +1,2 @@
-/usr/lib/*.so.*
+/usr/lib/libfiu.so.*
+/usr/lib/*_preload.so
