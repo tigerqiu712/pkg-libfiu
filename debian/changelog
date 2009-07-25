@@ -1,5 +1,5 @@
-libfiu (0.12-1) UNRELEASED; urgency=low
+libfiu (0.12-1) unstable; urgency=low
 
   * Initial release. (Closes: #536732)
 
- -- Chris Lamb <lamby@debian.org>  Tue, 14 Jul 2009 00:08:34 +0100
+ -- Chris Lamb <lamby@debian.org>  Sat, 25 Jul 2009 12:43:58 +0200
