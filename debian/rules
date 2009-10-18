@@ -3,7 +3,7 @@
 DOCS = $(patsubst %.rst,%.html, $(wildcard doc/*.rst))
 
 %:
-	dh --with quilt $@
+	dh $@
 
 clean:
 	rm -f doc/*.html
