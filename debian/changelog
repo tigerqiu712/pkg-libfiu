@@ -1,4 +1,4 @@
-libfiu (0.13-1) UNRELEASED; urgency=low
+libfiu (0.13-1) unstable; urgency=low
 
   * New upstream release.
   * Drop 01-add-version-to-Makefile.diff, 02-add-soname.diff, 
@@ -7,7 +7,7 @@ libfiu (0.13-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.8.3.
   * Bump Build-Depends on debhelper to 7.5.0~ as override functionality used.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 18 Oct 2009 23:17:58 +0100
+ -- Chris Lamb <lamby@debian.org>  Sun, 18 Oct 2009 23:25:46 +0100
 
 libfiu (0.12-1) unstable; urgency=low
 
