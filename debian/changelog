@@ -4,6 +4,7 @@ libfiu (0.13-1) UNRELEASED; urgency=low
   * Drop 01-add-version-to-Makefile.diff, 02-add-soname.diff, 
     03-manpage-hyphens.diff, 04-manpage-dir.diff, 05-destdir-pkgconfig.diff,
     and 06-plibpath.diff: all applied upstream.
+  * Bump Standards-Version to 3.8.3.
 
  -- Chris Lamb <lamby@debian.org>  Sun, 18 Oct 2009 23:17:58 +0100
 
