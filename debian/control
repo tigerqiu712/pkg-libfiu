@@ -20,7 +20,7 @@ Description: userspace fault injection framework
  you will require the "libfiu-dev" package.
 
 Package: fiu-utils
-Section: libdevel
+Section: devel
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, libfiu0 (= ${binary:Version})
 Description: userspace fault injection framework (utilities)
