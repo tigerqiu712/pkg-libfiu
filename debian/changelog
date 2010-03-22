@@ -1,6 +1,7 @@
 libfiu (0.13-3) UNRELEASED; urgency=low
 
   * Normalise override disparity by moving fiu-utils from "libdevel" to "devel"
+  * Add patch to fix run-time abort on *BSD platforms. (Closes: #574752)
 
  -- Chris Lamb <lamby@debian.org>  Thu, 18 Mar 2010 10:48:11 +0000
 
