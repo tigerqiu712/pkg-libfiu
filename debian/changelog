@@ -1,4 +1,4 @@
-libfiu (0.14-1) UNRELEASED; urgency=low
+libfiu (0.14-1) unstable; urgency=low
 
   * New upstream release.
     - Drop "01_libc6_location.diff"; applied upstream.
@@ -7,7 +7,7 @@ libfiu (0.14-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.1.
   * Bump Standards-Version to 3.9.2.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 15 Jul 2011 16:09:40 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 15 Jul 2011 16:19:14 +0100
 
 libfiu (0.13-3) unstable; urgency=low
 
