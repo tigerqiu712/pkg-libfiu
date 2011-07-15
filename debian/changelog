@@ -2,6 +2,7 @@ libfiu (0.14-1) UNRELEASED; urgency=low
 
   * New upstream release.
     - Drop "01_libc6_location.diff"; applied upstream.
+    - Drop "02_mode_t_freebsd.diff"; applied upstream.
   * Update Vcs-{Git,Browser}.
   * Bump Standards-Version to 3.9.1.
   * Bump Standards-Version to 3.9.2.
