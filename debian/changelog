@@ -1,10 +1,11 @@
-libfiu (0.13-4) UNRELEASED; urgency=low
+libfiu (0.14-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Update Vcs-{Git,Browser}.
   * Bump Standards-Version to 3.9.1.
   * Bump Standards-Version to 3.9.2.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 26 Feb 2011 17:42:21 +0000
+ -- Chris Lamb <lamby@debian.org>  Fri, 15 Jul 2011 16:09:40 +0100
 
 libfiu (0.13-3) unstable; urgency=low
 
