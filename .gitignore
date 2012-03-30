@@ -7,6 +7,9 @@ libfiu/libfiu.pc
 libfiu/libfiu.so
 libfiu/libfiu.so.*
 libfiu/build-flags
+libfiu/doxygen/doc.internal
+libfiu/doxygen/doc.public
+libfiu/doxygen/Doxyfile.base
 preload/posix/*.o
 preload/posix/*.so
 preload/posix/build-flags
@@ -22,4 +25,6 @@ preload/run/*.so
 preload/run/fiu-run
 preload/run/build-flags
 preload/run/build-needlibdl
-
+tests/*.o
+tests/build-flags
+tests/test-?
