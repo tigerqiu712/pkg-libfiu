@@ -19,6 +19,7 @@ enum pf_method {
 	PF_ALWAYS = 1,
 	PF_PROB,
 	PF_EXTERNAL,
+	PF_STACK,
 };
 
 /* Point of failure information */
@@ -39,6 +40,12 @@ struct pf_info {
 		/* To use when method == PF_EXTERNAL */
 		external_cb_t *external_cb;
 
+		/* To use when method == PF_STACK */
+		struct stack {
+			void *func_start;
+			void *func_end;
+			int func_pos_in_stack;
+		} stack;
 	} minfo;
 };
 
@@ -167,6 +174,41 @@ static int shrink_enabled_fails(void)
 	return 0;
 }
 
+/* Determines if the given address is within the function code. */
+static int pc_in_func(struct pf_info *pf, void *pc)
+{
+	/* We don't know if the platform allows us to know func_end,
+	 * so we use different methods depending on its availability. */
+	if (pf->minfo.stack.func_end) {
+		return (pc > pf->minfo.stack.func_start &&
+				pc < pf->minfo.stack.func_end);
+	} else {
+		return pf->minfo.stack.func_start == get_func_start(pc);
+	}
+}
+
+/* Determines wether to fail or not the given failure point, which is of type
+ * PF_STACK. Returns 1 if it should fail, or 0 if it should not. */
+static int should_stack_fail(struct pf_info *pf)
+{
+	// TODO: Find the right offset for pos_in_stack: we should look for
+	// fiu_fail(), and start counting from there.
+	int nptrs, i;
+	void *buffer[100];
+
+	nptrs = get_backtrace(buffer, 100);
+
+	for (i = 0; i < nptrs; i++) {
+		if (pc_in_func(pf, buffer[i]) &&
+				(pf->minfo.stack.func_pos_in_stack == -1 ||
+				 i == pf->minfo.stack.func_pos_in_stack)) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 /* Pseudorandom number generator.
  *
  * The performance of the PRNG is very sensitive to us, so we implement our
@@ -259,8 +301,8 @@ int fiu_fail(const char *name)
 
 	rec_count++;
 
-	/* we must do this before acquiring the lock and calling any
-	 * (potentially wrapped) functions */
+	/* We must do this before acquiring the lock and calling any
+	 * (potentially wrapped) functions. */
 	if (rec_count > 1) {
 		rec_count--;
 		return 0;
@@ -289,6 +331,10 @@ int fiu_fail(const char *name)
 						&(pf->failnum),
 						&(pf->failinfo),
 						&(pf->flags)))
+					goto exit_fail;
+				break;
+			case PF_STACK:
+				if (should_stack_fail(pf))
 					goto exit_fail;
 				break;
 			default:
@@ -329,42 +375,32 @@ void *fiu_failinfo(void)
  * Control API
  */
 
-/* Sets up the given pf. For internal use only. */
+/* Sets up the given pf.
+ * Only the common fields are filled, the caller should take care of the
+ * method-specific ones. For internal use only. */
 static int setup_fail(struct pf_info *pf, const char *name, int failnum,
-		void *failinfo, unsigned int flags, enum pf_method method,
-		float probability, external_cb_t *external_cb)
+		void *failinfo, unsigned int flags, enum pf_method method)
 {
 	pf->name = strdup(name);
+	if (pf->name == NULL)
+		return -1;
+
 	pf->namelen = strlen(name);
 	pf->failnum = failnum;
 	pf->failinfo = failinfo;
 	pf->flags = flags;
 	pf->method = method;
-	switch (method) {
-		case PF_ALWAYS:
-			break;
-		case PF_PROB:
-			pf->minfo.probability = probability;
-			break;
-		case PF_EXTERNAL:
-			pf->minfo.external_cb = external_cb;
-			break;
-		default:
-			return -1;
-	}
 
-	if (pf->name == NULL)
-		return -1;
 	return 0;
-
 }
 
-/* Creates a new pf in the enabled_fails table. For internal use only. */
-static int insert_new_fail(const char *name, int failnum, void *failinfo,
-		unsigned int flags, enum pf_method method, float probability,
-		external_cb_t *external_cb)
+/* Creates a new pf in the enabled_fails table.
+ * Only the common fields are filled, the caller should take care of the
+ * method-specific ones. For internal use only. */
+static struct pf_info *insert_new_fail(const char *name, int failnum,
+		void *failinfo, unsigned int flags, enum pf_method method)
 {
-	struct pf_info *pf;
+	struct pf_info *pf = NULL;
 	int rv = -1;
 	size_t prev_len;
 
@@ -377,18 +413,20 @@ static int insert_new_fail(const char *name, int failnum, void *failinfo,
 		for (pf = enabled_fails; pf <= enabled_fails_last; pf++) {
 			if (pf->name == NULL || strcmp(pf->name, name) == 0) {
 				rv = setup_fail(pf, name, failnum, failinfo,
-						flags, method, probability,
-						external_cb);
-				if (rv == 0)
-					enabled_fails_nfree--;
+						flags, method);
+				if (rv != 0) {
+					pf = NULL;
+					goto exit;
+				}
 
+				enabled_fails_nfree--;
 				goto exit;
 			}
 		}
 
 		/* There should be a free slot, but couldn't find one! This
 		 * shouldn't happen */
-		rv = -1;
+		pf = NULL;
 		goto exit;
 	}
 
@@ -399,7 +437,7 @@ static int insert_new_fail(const char *name, int failnum, void *failinfo,
 		enabled_fails_last = NULL;
 		enabled_fails_len = 0;
 		enabled_fails_nfree = 0;
-		rv = -1;
+		pf = NULL;
 		goto exit;
 	}
 
@@ -413,39 +451,95 @@ static int insert_new_fail(const char *name, int failnum, void *failinfo,
 	enabled_fails_last = enabled_fails + enabled_fails_len - 1;
 
 	pf = enabled_fails + prev_len;
-	rv = setup_fail(pf, name, failnum, failinfo, flags, method,
-			probability, external_cb);
-	if (rv == 0)
-		enabled_fails_nfree--;
+	rv = setup_fail(pf, name, failnum, failinfo, flags, method);
+	if (rv != 0) {
+		pf = NULL;
+		goto exit;
+	}
+
+	enabled_fails_nfree--;
 
 exit:
 	ef_wunlock();
 	rec_count--;
-	return rv;
+	return pf;
 }
 
 /* Makes the given name fail. */
 int fiu_enable(const char *name, int failnum, void *failinfo,
 		unsigned int flags)
 {
-	return insert_new_fail(name, failnum, failinfo, flags, PF_ALWAYS, 0,
-			NULL);
+	struct pf_info *pf;
+
+	pf = insert_new_fail(name, failnum, failinfo, flags, PF_ALWAYS);
+	if (pf == NULL)
+		return -1;
+
+	return 0;
 }
 
 /* Makes the given name fail with the given probability. */
 int fiu_enable_random(const char *name, int failnum, void *failinfo,
 		unsigned int flags, float probability)
 {
-	return insert_new_fail(name, failnum, failinfo, flags, PF_PROB,
-			probability, NULL);
+	struct pf_info *pf;
+
+	pf = insert_new_fail(name, failnum, failinfo, flags, PF_PROB);
+	if (pf == NULL)
+		return -1;
+
+	pf->minfo.probability = probability;
+	return 0;
 }
 
 /* Makes the given name fail when the external function returns != 0. */
 int fiu_enable_external(const char *name, int failnum, void *failinfo,
 		unsigned int flags, external_cb_t *external_cb)
 {
-	return insert_new_fail(name, failnum, failinfo, flags, PF_EXTERNAL,
-			0, external_cb);
+	struct pf_info *pf;
+
+	pf = insert_new_fail(name, failnum, failinfo, flags, PF_EXTERNAL);
+	if (pf == NULL)
+		return -1;
+
+	pf->minfo.external_cb = external_cb;
+	return 0;
+}
+
+/* Makes the given name fail when func is in the stack at func_pos.
+ * If func_pos is -1, then any position will match. */
+int fiu_enable_stack(const char *name, int failnum, void *failinfo,
+		unsigned int flags, void *func, int func_pos_in_stack)
+{
+	struct pf_info *pf;
+
+	/* Specifying the stack position is unsupported for now */
+	if (func_pos_in_stack != -1)
+		return -1;
+
+	pf = insert_new_fail(name, failnum, failinfo, flags, PF_STACK);
+	if (pf == NULL)
+		return -1;
+
+	pf->minfo.stack.func_start = func;
+	pf->minfo.stack.func_end = get_func_end(func);
+	pf->minfo.stack.func_pos_in_stack = func_pos_in_stack;
+	return 0;
+}
+
+/* Same as fiu_enable_stack(), but takes a function name. */
+int fiu_enable_stack_by_name(const char *name, int failnum, void *failinfo,
+		unsigned int flags, const char *func_name,
+		int func_pos_in_stack)
+{
+	void *fp;
+
+	fp = get_func_addr(func_name);
+	if (fp == NULL)
+		return -1;
+
+	return fiu_enable_stack(name, failnum, failinfo, flags, fp,
+			func_pos_in_stack);
 }
 
 /* Makes the given name NOT fail. */
