@@ -1,6 +1,7 @@
 libfiu (0.90-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Add python3-dev to Build-Depends.
 
  -- Chris Lamb <lamby@debian.org>  Fri, 30 Mar 2012 10:46:06 +0100
 
