@@ -1,3 +1,9 @@
+libfiu (0.90-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 30 Mar 2012 10:46:06 +0100
+
 libfiu (0.14-2) unstable; urgency=low
 
   * Add missing Build-Depends on python-support. (Closes: #642450)
