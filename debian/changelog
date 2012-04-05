@@ -4,6 +4,7 @@ libfiu (0.90-1) UNRELEASED; urgency=low
   * Add python3-dev to Build-Depends.
   * Add patch from upstream to fix Python tests.
     <http://blitiri.com.ar/git/?p=libfiu;a=commit;h=83fb1e675de26ad5409e554e2947e53c8f1b10c0>
+  * Update symbols.
 
  -- Chris Lamb <lamby@debian.org>  Fri, 30 Mar 2012 10:46:06 +0100
 
