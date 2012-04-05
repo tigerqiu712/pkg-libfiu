@@ -1,4 +1,4 @@
-libfiu (0.90-1) UNRELEASED; urgency=low
+libfiu (0.90-1) unstable; urgency=low
 
   * New upstream release.
   * Add python3-dev to Build-Depends.
@@ -6,7 +6,7 @@ libfiu (0.90-1) UNRELEASED; urgency=low
     <http://blitiri.com.ar/git/?p=libfiu;a=commit;h=83fb1e675de26ad5409e554e2947e53c8f1b10c0>
   * Update symbols.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 30 Mar 2012 10:46:06 +0100
+ -- Chris Lamb <lamby@debian.org>  Thu, 05 Apr 2012 09:26:02 +0100
 
 libfiu (0.14-2) unstable; urgency=low
 
