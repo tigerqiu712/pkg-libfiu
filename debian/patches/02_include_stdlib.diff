@@ -1,0 +1,29 @@
+From 005a56fbcb5ab8045f9d51676c521b335f058552 Mon Sep 17 00:00:00 2001
+From: Alberto Bertogli <albertito@blitiri.com.ar>
+Date: Fri, 6 Apr 2012 17:51:15 +0100
+Subject: [PATCH] libfiu: Include <stdlib.h> to fix a broken build
+
+On some platforms, the headers already included by backtrace.c are not enough
+to get the definition of NULL, so this patch includes <stdlib.h> directly to
+prevent that.
+
+Signed-off-by: Alberto Bertogli <albertito@blitiri.com.ar>
+---
+ libfiu/backtrace.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/libfiu/backtrace.c b/libfiu/backtrace.c
+index fc44d9a..60c2e27 100644
+--- a/libfiu/backtrace.c
++++ b/libfiu/backtrace.c
+@@ -7,6 +7,7 @@
+ /* This is needed for some of the functions below. */
+ #define _GNU_SOURCE
+ 
++#include <stdlib.h>	/* NULL */
+ #include <execinfo.h>
+ #include <dlfcn.h>
+ #include <sys/procfs.h>
+-- 
+1.7.1
+
