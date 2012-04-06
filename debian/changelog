@@ -1,9 +1,9 @@
-libfiu (0.90-2) UNRELEASED; urgency=low
+libfiu (0.90-2) unstable; urgency=low
 
   * Apply patch from upstream to attempt to fix broken builds.
     <http://blitiri.com.ar/git/?p=libfiu;a=commit;h=005a56fbcb5ab8045f9d51676c521b335f058552>
 
- -- Chris Lamb <lamby@debian.org>  Fri, 06 Apr 2012 19:01:45 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 06 Apr 2012 19:03:08 +0100
 
 libfiu (0.90-1) unstable; urgency=low
 
