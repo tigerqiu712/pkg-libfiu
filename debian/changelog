@@ -1,9 +1,9 @@
-libfiu (0.90-3) UNRELEASED; urgency=low
+libfiu (0.90-3) unstable; urgency=low
 
   * Make passing the testsuite optional; upstream does not 100% rely on it yet
     on all architectures.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 11 Apr 2012 11:18:37 +0100
+ -- Chris Lamb <lamby@debian.org>  Wed, 11 Apr 2012 11:19:27 +0100
 
 libfiu (0.90-2) unstable; urgency=low
 
