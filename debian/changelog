@@ -1,6 +1,7 @@
 libfiu (0.91-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Drop 01_wrap_python_for_tests.diff - applied upstream.
 
  -- Chris Lamb <lamby@debian.org>  Thu, 06 Sep 2012 01:57:41 +0100
 
