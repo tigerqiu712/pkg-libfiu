@@ -14,21 +14,18 @@ endif
 ifneq ($(V), 1)
 	NICE_CC = @echo "  CC  $@"; $(CC)
 	NICE_RUN = @echo "  RUN $<"; LD_LIBRARY_PATH=../libfiu/
-	NICE_PY_RUN = @echo "  PY  $<"; \
-		      LD_LIBRARY_PATH=../libfiu/ \
-		      PYTHONPATH=../bindings/python/
+	NICE_PY = @echo "  PY  $<"; ./wrap-python 2
 else
 	NICE_CC = $(CC)
 	NICE_RUN = LD_LIBRARY_PATH=../libfiu/
-	NICE_PY_RUN = LD_LIBRARY_PATH=../libfiu/ \
-		      PYTHONPATH=../bindings/python/
+	NICE_PY = ./wrap-python 2
 endif
 
 default: tests
 
 all: tests
 
-tests: c-tests py-tests
+tests: c-tests py-tests gen-tests
 
 #
 # C tests
@@ -69,15 +66,27 @@ PY_TESTS := $(wildcard test-*.py)
 py-tests: $(patsubst %.py,py-run-%,$(PY_TESTS))
 
 py-run-%: %.py
-	$(NICE_PY_RUN) python ./$<
+	$(NICE_PY) ./$<
+
+#
+# Generated tests
+#
+
+gen-tests:
+	$(MAKE) -C generated
 
 
+#
+# Cleanup
+#
+
+# Normally, $C_OBJS and $C_BINS are removed by make after building,
+# since here they're considered "intermediate files"; however we
+# also remove them when cleaning just in case.
 clean:
-	# Normally, $C_OBJS and $C_BINS are removed by make after building,
-	# since here they're considered "intermediate files"; however we
-	# also remove them when cleaning just in case.
 	rm -f $(C_OBJS) $(C_BINS)
 	rm -f *.bb *.bbg *.da *.gcov *.gcda *.gcno gmon.out build-flags
+	$(MAKE) -C generated clean
 
 FORCE:
 
