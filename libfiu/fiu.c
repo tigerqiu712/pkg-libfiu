@@ -180,8 +180,8 @@ static int pc_in_func(struct pf_info *pf, void *pc)
 	/* We don't know if the platform allows us to know func_end,
 	 * so we use different methods depending on its availability. */
 	if (pf->minfo.stack.func_end) {
-		return (pc > pf->minfo.stack.func_start &&
-				pc < pf->minfo.stack.func_end);
+		return (pc >= pf->minfo.stack.func_start &&
+				pc <= pf->minfo.stack.func_end);
 	} else {
 		return pf->minfo.stack.func_start == get_func_start(pc);
 	}
@@ -517,11 +517,17 @@ int fiu_enable_stack(const char *name, int failnum, void *failinfo,
 	if (func_pos_in_stack != -1)
 		return -1;
 
+	if (backtrace_works((void (*)()) fiu_enable_stack) == 0)
+		return -1;
+
 	pf = insert_new_fail(name, failnum, failinfo, flags, PF_STACK);
 	if (pf == NULL)
 		return -1;
 
 	pf->minfo.stack.func_start = func;
+
+	/* Note get_func_end(func) can return NULL and we would still be able
+	 * to make it work, see pc_in_func() above. */
 	pf->minfo.stack.func_end = get_func_end(func);
 	pf->minfo.stack.func_pos_in_stack = func_pos_in_stack;
 	return 0;
@@ -533,6 +539,12 @@ int fiu_enable_stack_by_name(const char *name, int failnum, void *failinfo,
 		int func_pos_in_stack)
 {
 	void *fp;
+
+	/* We need to check this here instead of relying on the test within
+	 * fiu_enable_stack() in case it is inlined; that would fail the check
+	 * because fiu_enable_stack() would not be in the stack. */
+	if (backtrace_works((void (*)()) fiu_enable_stack_by_name) == 0)
+		return -1;
 
 	fp = get_func_addr(func_name);
 	if (fp == NULL)
