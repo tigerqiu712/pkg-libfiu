@@ -1,4 +1,5 @@
 libfiu.so.0 libfiu0 #MINVER#
+ backtrace_works@Base 0.91
  fiu_disable@Base 0.12
  fiu_enable@Base 0.12
  fiu_enable_external@Base 0.12

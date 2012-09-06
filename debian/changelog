@@ -1,6 +1,7 @@
 libfiu (0.91-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Update symbols.
   * Drop 01_wrap_python_for_tests.diff - applied upstream.
   * Drop 02_include_stdlib.diff - applied upstream.
 
