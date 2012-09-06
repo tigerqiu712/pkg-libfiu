@@ -1,11 +1,11 @@
-libfiu (0.91-1) UNRELEASED; urgency=low
+libfiu (0.91-1) unstable; urgency=low
 
   * New upstream release.
   * Update symbols.
   * Drop 01_wrap_python_for_tests.diff - applied upstream.
   * Drop 02_include_stdlib.diff - applied upstream.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 06 Sep 2012 01:57:41 +0100
+ -- Chris Lamb <lamby@debian.org>  Thu, 06 Sep 2012 02:29:33 +0100
 
 libfiu (0.90-3) unstable; urgency=low
 
