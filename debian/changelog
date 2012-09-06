@@ -1,3 +1,9 @@
+libfiu (0.91-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 06 Sep 2012 01:57:41 +0100
+
 libfiu (0.90-3) unstable; urgency=low
 
   * Make passing the testsuite optional; upstream does not 100% rely on it yet
