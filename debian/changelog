@@ -1,4 +1,4 @@
-libfiu (0.91-2) UNRELEASED; urgency=low
+libfiu (0.91-2) unstable; urgency=low
 
   * Require the testsuite to pass at request of upstream - was optional since
     0.90-3.
@@ -10,7 +10,7 @@ libfiu (0.91-2) UNRELEASED; urgency=low
     Thanks to Scott Kitterman <debian@kitterman.com>.
   * Move to dh_python2. Thanks to Scott Kitterman <debian@kitterman.com>.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 12 Sep 2012 00:59:47 +0100
+ -- Chris Lamb <lamby@debian.org>  Thu, 23 May 2013 00:49:47 +0100
 
 libfiu (0.91-1) unstable; urgency=low
 
