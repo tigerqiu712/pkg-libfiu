@@ -5,7 +5,7 @@ buildvers := $(shell pyversions -sv)
 build3vers := $(shell py3versions -sv)
 
 %:
-	dh $@ --with python3
+	dh $@ --with python3,python2
 
 clean:
 	rm -f doc/*.html
