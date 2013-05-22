@@ -1,9 +1,11 @@
 #!/usr/bin/make -f
 
 DOCS = $(patsubst %.rst,%.html, $(wildcard doc/*.rst))
+buildvers := $(shell pyversions -sv)
+build3vers := $(shell py3versions -sv)
 
 %:
-	dh $@
+	dh $@ --with python3
 
 clean:
 	rm -f doc/*.html
@@ -13,11 +15,25 @@ doc/%.html: doc/%.rst
 
 override_dh_auto_build: $(DOCS)
 	dh_auto_build
-	cd bindings/python && python setup.py build
+	cd bindings/python \
+	set -e && for i in $(buildvers); do \
+	  python$$i ./setup.py build; \
+	done
+	cd bindings/python \
+	set -e && for i in $(build3vers); do \
+	  python$$i ./setup.py build; \
+	done
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr PLIBPATH=/usr/lib/fiu
-	cd bindings/python && python setup.py install --root=$(CURDIR)/debian/python-fiu --no-compile -O0 --install-layout=deb
+	cd bindings/python \
+	set -e && for i in $(buildvers); do \
+	  python$$i ./setup.py install --root=$(CURDIR)/debian/python-fiu --no-compile -O0 --install-layout=deb; \
+	done
+	cd bindings/python \
+	set -e && for i in $(build3vers); do \
+	  python$$i ./setup.py install --root=$(CURDIR)/debian/python3-fiu --no-compile -O0 --install-layout=deb; \
+	done
 
 override_dh_compress:
 	dh_compress -X.rst

@@ -2,6 +2,12 @@ libfiu (0.91-2) UNRELEASED; urgency=low
 
   * Require the testsuite to pass at request of upstream - was optional since
     0.90-3.
+  * Add/fix support for python3:
+    - Add python3-fiu binary to debian/control
+    - Adjust debian/rules to build for all versions
+    - Change python/python3 build deps to python{3}-all-dev to support build
+      for all versions
+    Thanks to Scott Kitterman <debian@kitterman.com>.
 
  -- Chris Lamb <lamby@debian.org>  Wed, 12 Sep 2012 00:59:47 +0100
 

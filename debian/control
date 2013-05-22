@@ -2,7 +2,7 @@ Source: libfiu
 Section: libs
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
-Build-Depends: debhelper (>= 7.0.50~), python-dev, python-docutils, python-support, python3-dev
+Build-Depends: debhelper (>= 7.0.50~), python-all-dev, python-docutils, python-support, python3-all-dev
 Standards-Version: 3.9.2
 Homepage: http://blitiri.com.ar/p/libfiu/
 Vcs-Git: git://github.com/lamby/pkg-libfiu.git
@@ -52,3 +52,14 @@ Description: userspace fault injection framework (Python bindings)
  enable/disable the failure of those points (the "control API").
  .
  This package contains Python bindings to libfiu.
+
+Package: python3-fiu
+Section: python
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python3:Depends}, libfiu0 (= ${binary:Version})
+Description: userspace fault injection framework (Python 3 bindings)
+ libfiu is a C library for fault injection. It provides functions to mark
+ "points of failure" inside your code (the "core API"), and functions to
+ enable/disable the failure of those points (the "control API").
+ .
+ This package contains Python 3 bindings to libfiu.
