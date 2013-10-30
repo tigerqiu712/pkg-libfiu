@@ -1,9 +1,10 @@
-libfiu (0.91-3) UNRELEASED; urgency=low
+libfiu (0.92-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Add "this work is to be considered Public Domain" to debian/copyright.
     Thanks to Ansgar Burchardt.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 29 May 2013 22:24:01 +0100
+ -- Chris Lamb <lamby@debian.org>  Wed, 30 Oct 2013 11:00:46 +0000
 
 libfiu (0.91-2) unstable; urgency=low
 
