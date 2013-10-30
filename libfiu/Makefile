@@ -1,13 +1,18 @@
 
-CFLAGS += -std=c99 -pedantic -Wall -O3
+CFLAGS += -std=c99 -pedantic -Wall
 ALL_CFLAGS = -D_XOPEN_SOURCE=600 -fPIC -DFIU_ENABLE=1 $(CFLAGS)
 
-ifdef DEBUG
-ALL_CFLAGS += -g
-endif
+# Optimization CFLAGS, only used when doing a non-debug build.
+OPT_CFLAGS = -O3
 
-ifdef PROFILE
-ALL_CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
+ifdef DEBUG
+    ALL_CFLAGS += -g
+else
+   ifdef PROFILE
+        ALL_CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
+   else
+       ALL_CFLAGS += $(OPT_CFLAGS)
+   endif
 endif
 
 
@@ -21,7 +26,7 @@ DESTDIR=$(PREFIX)
 INSTALL=install
 
 
-OBJS = fiu.o fiu-rc.o backtrace.o
+OBJS = fiu.o fiu-rc.o backtrace.o wtable.o hash.o
 
 
 ifneq ($(V), 1)
@@ -30,7 +35,7 @@ else
 	NICE_CC = $(CC)
 endif
 
-LIB_VER=0.91
+LIB_VER=0.92
 LIB_SO_VER=0
 
 
