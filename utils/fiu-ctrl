@@ -40,7 +40,7 @@ All of the enable\* can also optionally take 'failnum' and 'failinfo'
 parameters, analogous to the ones taken by the C functions.
 
 The following options existed in the past but are deprecated and WILL BE
-REMOVED in future releases: -e, -p, -u and -i.
+REMOVED in future releases: -e, -p, -u, -i, and -d.
 
 
 Examples:
@@ -80,18 +80,22 @@ function opts_reset() {
 }
 
 function add_deprecated_enable() {
-	if [ "$NAME" == "" ]; then
+	if [ "$DEP_NAME" == "" ]; then
 		return
 	fi;
 
 	PARAMS="name=$DEP_NAME,failnum=$DEP_FAILNUM,failinfo=$DEP_FAILINFO"
-	if [ $PROB -ge 0 ]; then
-		C="enable_random $PARAMS,probability=$PROB"
+	if [ "$DEP_PROB" -ge 0 ]; then
+		C="enable_random $PARAMS,probability=0.$DEP_PROB"
 	else
 		C="enable $PARAMS"
 	fi
 
 	CMDS[${#CMDS[*]}]="$C"
+}
+
+function deprecated_warning() {
+	echo "Warning: this option is deprecated and will be removed." >&2
 }
 
 opts_reset;
@@ -102,23 +106,28 @@ while getopts "+c:e:p:u:i:d:f:h" opt; do
 		;;
 	e)
 		# add the current one, if any
+		deprecated_warning;
 		add_deprecated_enable;
 		opts_reset;
 		DEP_NAME="$OPTARG"
 		;;
 	p)
+		deprecated_warning;
 		DEP_PROB="$OPTARG"
 		;;
 	u)
+		deprecated_warning;
 		DEP_FAILNUM="$OPTARG"
 		;;
 	i)
+		deprecated_warning;
 		DEP_FAILINFO="$OPTARG"
 		;;
 	f)
 		FIFO_PREFIX="$OPTARG"
 		;;
 	d)
+		deprecated_warning;
 		CMDS[${#CMDS[*]}]="disable name=$OPTARG"
 		opts_reset;
 		;;
@@ -130,8 +139,8 @@ while getopts "+c:e:p:u:i:d:f:h" opt; do
 done
 
 # add leftovers
-if [ "$NAME" != "" ]; then
-	add_cmd;
+if [ "$DEP_NAME" != "" ]; then
+	add_deprecated_enable;
 fi
 
 # eat the parameters we already processed
@@ -167,6 +176,7 @@ function send_cmd_fifo() {
 	if [ "$REPLY" == "-1" ]; then
 		echo "$P: Command '$@' returned error ($REPLY)"
 	fi
+	#echo "$P: $@ -> $REPLY"
 }
 
 for c in "${CMDS[@]}"; do
