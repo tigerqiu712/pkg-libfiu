@@ -1,7 +1,8 @@
 
 CFLAGS += -std=c99 -Wall -O3
 ALL_CFLAGS = -D_XOPEN_SOURCE=600 -fPIC -DFIU_ENABLE=1 \
-		-I. -I../../libfiu/ $(CFLAGS)
+		-D_LARGEFILE64_SOURCE=1 -I. -I../../libfiu/ \
+		$(CFLAGS)
 
 ifdef DEBUG
 ALL_CFLAGS += -g
@@ -10,6 +11,11 @@ endif
 ifdef PROFILE
 ALL_CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
 endif
+
+ifdef POSIX_TRACE
+    ALL_CFLAGS += -DFIU_POSIX_TRACE=1
+endif
+
 
 # prefix for installing the binaries
 PREFIX=/usr/local
@@ -52,7 +58,7 @@ build-flags: .force-build-flags
 
 $(GEN_OBJS): $(GEN_C)
 
-$(OBJS): build-flags
+$(OBJS): build-flags codegen.h
 
 %.mod.c: %.mod
 	$(NICE_GEN) $< $@ $<.fl
@@ -62,7 +68,7 @@ $(OBJS): build-flags
 
 # We define _GNU_SOURCE to get RTLD_NEXT if available; on non-GNU
 # platforms it should be harmless.
-codegen.o: codegen.c
+codegen.o: codegen.c build-flags
 	$(NICE_CC) $(ALL_CFLAGS) -D_GNU_SOURCE -c $< -o $@
 
 # some platforms do not have libdl, we only use it if available
@@ -117,6 +123,8 @@ clean:
 	rm -f build-flags build-env.h build-libcsoname build-needlibdl
 	rm -f function_list fiu_posix_preload.so
 	rm -f *.bb *.bbg *.da *.gcov *.gcda *.gcno gmon.out
+	rm -f modules/*.bb modules/*.bbg modules/*.da
+	rm -f modules/*.gcov modules/*.gcda modules/*.gcno modules/gmon.out
 
 .PHONY: default install uninstall clean .force-build-flags
 
