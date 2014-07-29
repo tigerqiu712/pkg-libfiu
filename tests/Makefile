@@ -15,17 +15,33 @@ ifneq ($(V), 1)
 	NICE_CC = @echo "  CC  $@"; $(CC)
 	NICE_RUN = @echo "  RUN $<"; LD_LIBRARY_PATH=../libfiu/
 	NICE_PY = @echo "  PY  $<"; ./wrap-python 2
+	NICE_LN = @echo "  LN $@"; ln -f
 else
 	NICE_CC = $(CC)
 	NICE_RUN = LD_LIBRARY_PATH=../libfiu/
 	NICE_PY = ./wrap-python 2
+	NICE_LN = ln -f
 endif
 
 default: tests
 
 all: tests
 
-tests: c-tests py-tests gen-tests
+tests: c-tests py-tests gen-tests utils-tests
+
+
+# Link the libraries to a single place, some of the tests need this.
+libs:
+	mkdir -p libs/
+
+libs/fiu_posix_preload.so: ../preload/posix/fiu_posix_preload.so libs
+	$(NICE_LN) $< libs/
+
+libs/fiu_run_preload.so: ../preload/run/fiu_run_preload.so libs
+	$(NICE_LN) $< libs/
+
+lnlibs: libs/fiu_posix_preload.so libs/fiu_run_preload.so
+
 
 #
 # C tests
@@ -65,16 +81,19 @@ PY_TESTS := $(wildcard test-*.py)
 
 py-tests: $(patsubst %.py,py-run-%,$(PY_TESTS))
 
-py-run-%: %.py
+py-run-%: %.py lnlibs
 	$(NICE_PY) ./$<
 
+
 #
-# Generated tests
+# Sub-directory tests
 #
 
 gen-tests:
 	$(MAKE) -C generated
 
+utils-tests:
+	$(MAKE) -C utils
 
 #
 # Cleanup
@@ -85,13 +104,14 @@ gen-tests:
 # also remove them when cleaning just in case.
 clean:
 	rm -f $(C_OBJS) $(C_BINS)
+	rm -rf libs/
 	rm -f *.bb *.bbg *.da *.gcov *.gcda *.gcno gmon.out build-flags
 	$(MAKE) -C generated clean
 
 FORCE:
 
 .PHONY: default all clean \
-	tests c-tests py-tests \
+	tests c-tests py-tests gen-tests utils-tests \
 	.force-build-flags
 
 
