@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: debhelper (>= 7.0.50~), python-all-dev, python-docutils, python3-all-dev
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Homepage: http://blitiri.com.ar/p/libfiu/
 Vcs-Git: git://github.com/lamby/pkg-libfiu.git
 Vcs-Browser: https://github.com/lamby/pkg-libfiu
