@@ -1,3 +1,9 @@
+libfiu (0.93-2) UNRELEASED; urgency=low
+
+  * Add patch from upstream to fix FTBFS on i386.
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 30 Jul 2014 10:41:38 +0100
+
 libfiu (0.93-1) unstable; urgency=medium
 
   * New upstream release.

@@ -1,0 +1,235 @@
+# https://blitiri.com.ar/git/r/libfiu/c/5f5577acbd198d7d6eec813cf434f6c3e1feb9d1/
+
+commit 5f5577acbd198d7d6eec813cf434f6c3e1feb9d1
+Author: Alberto Bertogli <albertito@blitiri.com.ar>
+Date:   Tue Jul 29 21:10:24 2014 +0100
+
+    preload/posix: Wrap open64()
+    
+    In 32-bit platforms, glibc commonly uses open64(), but we are not wrapping it.
+    
+    That causes us not be able to do something as simple as fail "cat" (which
+    coincidentally is what our fiu-run test does, causing it to fail).
+    
+    This patch adds open64 to our custom wrapper.
+    
+    To do that, instead of duplicating the custom wrapper we split the top code
+    generation macro into three smaller pieces, as we only need to customize one
+    of them.
+
+diff --git a/preload/posix/codegen.h b/preload/posix/codegen.h
+index 6eecd73..861cf2f 100644
+--- a/preload/posix/codegen.h
++++ b/preload/posix/codegen.h
+@@ -73,8 +73,8 @@ void *libc_symbol(const char *symbol);
+  * Wrapper generator macros
+  */
+ 
+-/* Generates the common top of the wrapped function */
+-#define mkwrap_top(RTYPE, NAME, PARAMS, PARAMSN, PARAMST, ON_ERR) \
++/* Generates the init part of the wrapped function */
++#define mkwrap_init(RTYPE, NAME, PARAMS, PARAMST) \
+ 	static RTYPE (*_fiu_orig_##NAME) PARAMS = NULL;		\
+ 								\
+ 	static int _fiu_in_init_##NAME = 0;			\
+@@ -89,13 +89,17 @@ void *libc_symbol(const char *symbol);
+ 								\
+ 		_fiu_in_init_##NAME--;				\
+ 		rec_dec();					\
+-	}							\
+-								\
++	}
++
++/* Generates the definition part of the wrapped function. */
++#define mkwrap_def(RTYPE, NAME, PARAMS, PARAMST) \
+ 	RTYPE NAME PARAMS					\
+ 	{ 							\
+ 		RTYPE r;					\
+-		int fstatus;					\
+-								\
++		int fstatus;
++
++/* Generate the first part of the body, which checks the recursion status */
++#define mkwrap_body_called(NAME, PARAMSN, ON_ERR) \
+ 		if (_fiu_called) {				\
+ 			if (_fiu_orig_##NAME == NULL) {		\
+ 				if (_fiu_in_init_##NAME) {	\
+@@ -115,6 +119,11 @@ void *libc_symbol(const char *symbol);
+ 		/* fiu_fail() may call anything */		\
+ 		rec_inc();
+ 
++/* Generates the common top for most functions (init + def + body called) */
++#define mkwrap_top(RTYPE, NAME, PARAMS, PARAMSN, PARAMST, ON_ERR) \
++	mkwrap_init(RTYPE, NAME, PARAMS, PARAMST) \
++	mkwrap_def(RTYPE, NAME, PARAMS, PARAMST) \
++	mkwrap_body_called(NAME, PARAMSN, ON_ERR)
+ 
+ /* Generates the body of the function for normal, non-errno usage. The return
+  * value is taken from failinfo. */
+diff --git a/preload/posix/modules/posix.custom.c b/preload/posix/modules/posix.custom.c
+index 959c58b..2672728 100644
+--- a/preload/posix/modules/posix.custom.c
++++ b/preload/posix/modules/posix.custom.c
+@@ -16,21 +16,8 @@
+ 
+ /* Wrapper for open(), we can't generate it because it has a variable number
+  * of arguments */
+-static int (*_fiu_orig_open) (const char *pathname, int flags, ...) = NULL;
+-
+-static int _fiu_in_init_open = 0;
+-
+-static void constructor_attr(201) _fiu_init_open(void)
+-{
+-	rec_inc();
+-	_fiu_in_init_open++;
+-
+-	_fiu_orig_open = (int (*) (const char *, int, ...))
+-		libc_symbol("open");
+-
+-	_fiu_in_init_open--;
+-	rec_dec();
+-}
++mkwrap_init(int, open, (const char *pathname, int flags, ...),
++		(const char *, int, ...))
+ 
+ int open(const char *pathname, int flags, ...)
+ {
+@@ -60,28 +47,93 @@ int open(const char *pathname, int flags, ...)
+ 
+ 	/* Differences from the generated code end here */
+ 
+-	if (_fiu_called) {
+-		if (_fiu_orig_open == NULL) {
+-			if (_fiu_in_init_open) {
+-				printd("fail on init\n");
+-				return -1;
+-			} else {
+-				printd("get orig\n");
+-				_fiu_init_open();
+-			}
+-		}
+-
+-		printd("orig\n");
+-		return (*_fiu_orig_open) (pathname, flags, mode);
+-	}
++/* Use the normal macros to complete the function, now that we have
++ * set mode to something */
++mkwrap_body_called(open, (pathname, flags, mode), -1)
++
++	static const int valid_errnos[] = {
++	  #ifdef EACCESS
++		EACCES,
++	  #endif
++	  #ifdef EFAULT
++		EFAULT,
++	  #endif
++	  #ifdef EFBIG
++		EFBIG,
++	  #endif
++	  #ifdef EOVERFLOW
++		EOVERFLOW,
++	  #endif
++	  #ifdef ELOOP
++		ELOOP,
++	  #endif
++	  #ifdef EMFILE
++		EMFILE,
++	  #endif
++	  #ifdef ENAMETOOLONG
++		ENAMETOOLONG,
++	  #endif
++	  #ifdef ENFILE
++		ENFILE,
++	  #endif
++	  #ifdef ENOENT
++		ENOENT,
++	  #endif
++	  #ifdef ENOMEM
++		ENOMEM,
++	  #endif
++	  #ifdef ENOSPC
++		ENOSPC,
++	  #endif
++	  #ifdef ENOTDIR
++		ENOTDIR,
++	  #endif
++	  #ifdef EROFS
++		EROFS
++	  #endif
++	};
++mkwrap_body_errno("posix/io/oc/open", -1)
++mkwrap_bottom(open, (pathname, flags, mode))
++
++
++/* The 64-bit variant for glibc.
++ * The code is identical to open(), just using open64() where appropriate. */
++#ifdef __GLIBC__
++
++mkwrap_init(int, open64, (const char *pathname, int flags, ...),
++		(const char *, int, ...))
++
++int open64(const char *pathname, int flags, ...)
++{
++	int r;
++	int fstatus;
++
++	/* Differences from the generated code begin here */
++
++	mode_t mode;
++	va_list l;
++
++	if (flags & O_CREAT) {
++		va_start(l, flags);
++
++		/* va_arg() can only take fully promoted types, and mode_t
++		 * sometimes is smaller than an int, so we should always pass
++		 * int to it, and not mode_t. Not doing so would may result in
++		 * a compile-time warning and run-time error. We asume that it
++		 * is never bigger than an int, which holds in practise. */
++		mode = va_arg(l, int);
+ 
+-	printd("fiu\n");
++		va_end(l);
++	} else {
++		/* set it to 0, it's ignored anyway */
++		mode = 0;
++	}
+ 
+-	/* fiu_fail() may call anything */
+-	rec_inc();
++	/* Differences from the generated code end here */
+ 
+-	/* Use the normal macros to complete the function, now that we have a
+-	 * set mode to something */
++/* Use the normal macros to complete the function, now that we have
++ * set mode to something */
++mkwrap_body_called(open, (pathname, flags, mode), -1)
+ 
+ 	static const int valid_errnos[] = {
+ 	  #ifdef EACCESS
+@@ -125,6 +177,6 @@ int open(const char *pathname, int flags, ...)
+ 	  #endif
+ 	};
+ mkwrap_body_errno("posix/io/oc/open", -1)
+-mkwrap_bottom(open, (pathname, flags, mode))
+-
++mkwrap_bottom(open64, (pathname, flags, mode))
+ 
++#endif
+diff --git a/tests/generated/tests/open64.conf b/tests/generated/tests/open64.conf
+new file mode 100644
+index 0000000..78c1839
+--- /dev/null
++++ b/tests/generated/tests/open64.conf
+@@ -0,0 +1,11 @@
++
++[open64]
++if: defined __GLIBC__
++fp: posix/io/oc/open
++include: sys/types.h sys/stat.h fcntl.h
++prep: int fd = -1;
++call: fd = open64("/dev/null", O_RDONLY);
++success_cond: fd != -1
++failure_cond: fd == -1
++errno_on_fail: ELOOP
++
