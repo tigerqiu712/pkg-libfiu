@@ -1,6 +1,7 @@
 libfiu (0.93-3) UNRELEASED; urgency=medium
 
   * Bump Standards-Version to 3.9.6.
+  * Bump Debhelper compatibility level to 9.
 
  -- Chris Lamb <lamby@debian.org>  Thu, 12 Feb 2015 17:15:14 +0000
 
