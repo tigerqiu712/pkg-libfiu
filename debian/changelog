@@ -1,3 +1,9 @@
+libfiu (0.93-3) UNRELEASED; urgency=medium
+
+  * Bump Standards-Version to 3.9.6.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 12 Feb 2015 17:15:14 +0000
+
 libfiu (0.93-2) unstable; urgency=low
 
   * Add patch from upstream to fix FTBFS on i386.
