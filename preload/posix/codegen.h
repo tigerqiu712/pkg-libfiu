@@ -18,9 +18,9 @@ void *libc_symbol(const char *symbol);
  *  - GCC >= 4.3 on Linux
  *  - clang as of 2010-03-14
  */
+#define _GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__ * 10)
 #if \
-	( (defined __GNUC__) \
-		&& __GNUC__ >= 4 && __GNUC_MINOR__ >= 3 ) \
+	( (defined __GNUC__) && _GCC_VERSION >= 4030 ) \
 	|| (defined __clang__)
   #define constructor_attr(prio) __attribute__((constructor(prio)))
 #else
@@ -73,8 +73,8 @@ void *libc_symbol(const char *symbol);
  * Wrapper generator macros
  */
 
-/* Generates the common top of the wrapped function */
-#define mkwrap_top(RTYPE, NAME, PARAMS, PARAMSN, PARAMST, ON_ERR) \
+/* Generates the init part of the wrapped function */
+#define mkwrap_init(RTYPE, NAME, PARAMS, PARAMST) \
 	static RTYPE (*_fiu_orig_##NAME) PARAMS = NULL;		\
 								\
 	static int _fiu_in_init_##NAME = 0;			\
@@ -89,13 +89,17 @@ void *libc_symbol(const char *symbol);
 								\
 		_fiu_in_init_##NAME--;				\
 		rec_dec();					\
-	}							\
-								\
+	}
+
+/* Generates the definition part of the wrapped function. */
+#define mkwrap_def(RTYPE, NAME, PARAMS, PARAMST) \
 	RTYPE NAME PARAMS					\
 	{ 							\
 		RTYPE r;					\
-		int fstatus;					\
-								\
+		int fstatus;
+
+/* Generate the first part of the body, which checks the recursion status */
+#define mkwrap_body_called(NAME, PARAMSN, ON_ERR) \
 		if (_fiu_called) {				\
 			if (_fiu_orig_##NAME == NULL) {		\
 				if (_fiu_in_init_##NAME) {	\
@@ -115,6 +119,11 @@ void *libc_symbol(const char *symbol);
 		/* fiu_fail() may call anything */		\
 		rec_inc();
 
+/* Generates the common top for most functions (init + def + body called) */
+#define mkwrap_top(RTYPE, NAME, PARAMS, PARAMSN, PARAMST, ON_ERR) \
+	mkwrap_init(RTYPE, NAME, PARAMS, PARAMST) \
+	mkwrap_def(RTYPE, NAME, PARAMS, PARAMST) \
+	mkwrap_body_called(NAME, PARAMSN, ON_ERR)
 
 /* Generates the body of the function for normal, non-errno usage. The return
  * value is taken from failinfo. */
@@ -123,6 +132,7 @@ void *libc_symbol(const char *symbol);
 		fstatus = fiu_fail(FIU_NAME);			\
 		if (fstatus != 0) {				\
 			r = (RTYPE) fiu_failinfo();		\
+			printd("failing\n");			\
 			goto exit;				\
 		}
 
@@ -133,6 +143,7 @@ void *libc_symbol(const char *symbol);
 		fstatus = fiu_fail(FIU_NAME);			\
 		if (fstatus != 0) {				\
 			r = FAIL_RET;				\
+			printd("failing\n");			\
 			goto exit;				\
 		}
 
@@ -151,6 +162,7 @@ void *libc_symbol(const char *symbol);
 				errno = (long) finfo;		\
 			}					\
 			r = FAIL_RET;				\
+			printd("failing\n");			\
 			goto exit;				\
 		}
 
@@ -161,6 +173,7 @@ void *libc_symbol(const char *symbol);
 								\
 		fstatus = fiu_fail(FIU_NAME);			\
 		if (fstatus != 0) {				\
+			printd("reducing\n");			\
 			CNT -= random() % CNT;			\
 		}
 

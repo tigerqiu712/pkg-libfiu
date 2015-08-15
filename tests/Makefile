@@ -27,7 +27,7 @@ default: tests
 
 all: tests
 
-tests: c-tests py-tests gen-tests utils-tests
+tests: c-tests py-tests gen-tests utils-tests collisions-tests
 
 
 # Link the libraries to a single place, some of the tests need this.
@@ -81,9 +81,11 @@ PY_TESTS := $(wildcard test-*.py)
 
 py-tests: $(patsubst %.py,py-run-%,$(PY_TESTS))
 
-py-run-%: %.py lnlibs
+py-run-%: %.py lnlibs small-cat
 	$(NICE_PY) ./$<
 
+small-cat: small-cat.c
+	$(NICE_CC) $(ALL_CFLAGS) $< -o $@
 
 #
 # Sub-directory tests
@@ -95,6 +97,9 @@ gen-tests:
 utils-tests:
 	$(MAKE) -C utils
 
+collisions-tests:
+	$(MAKE) -C collisions
+
 #
 # Cleanup
 #
@@ -104,7 +109,7 @@ utils-tests:
 # also remove them when cleaning just in case.
 clean:
 	rm -f $(C_OBJS) $(C_BINS)
-	rm -rf libs/
+	rm -rf libs/ small-cat
 	rm -f *.bb *.bbg *.da *.gcov *.gcda *.gcno gmon.out build-flags
 	$(MAKE) -C generated clean
 
