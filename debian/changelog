@@ -4,6 +4,7 @@ libfiu (0.94-1) UNRELEASED; urgency=medium
   * Bump Standards-Version to 3.9.6.
   * Bump Debhelper compatibility level to 9.
   * wrap-and-sort.
+  * Drop 01-fix-ftbfs-on-i386.diff - applied upstream.
 
  -- Chris Lamb <lamby@debian.org>  Sat, 15 Aug 2015 10:38:45 +0200
 
