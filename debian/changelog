@@ -1,10 +1,11 @@
-libfiu (0.93-3) UNRELEASED; urgency=medium
+libfiu (0.94-1) UNRELEASED; urgency=medium
 
+  * New upstream version.
   * Bump Standards-Version to 3.9.6.
   * Bump Debhelper compatibility level to 9.
   * wrap-and-sort.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 12 Feb 2015 17:15:14 +0000
+ -- Chris Lamb <lamby@debian.org>  Sat, 15 Aug 2015 10:38:45 +0200
 
 libfiu (0.93-2) unstable; urgency=low
 
