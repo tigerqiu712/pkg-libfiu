@@ -6,6 +6,7 @@ libfiu (0.94-1) UNRELEASED; urgency=medium
   * wrap-and-sort.
   * Drop 01-fix-ftbfs-on-i386.diff - applied upstream.
   * Add dh-python to Build-Depends.
+  * Update debian/symbols.
 
  -- Chris Lamb <lamby@debian.org>  Sat, 15 Aug 2015 10:38:45 +0200
 

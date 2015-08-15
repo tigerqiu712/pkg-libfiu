@@ -1,14 +1,4 @@
 libfiu.so.0 libfiu0 #MINVER#
- backtrace_works@Base 0.91
- cache_create@Base 0.92
- cache_del@Base 0.92
- cache_free@Base 0.92
- cache_get@Base 0.92
- cache_invalidate@Base 0.92
- cache_resize@Base 0.92
- cache_set@Base 0.92
- enabled_fails@Base 0.92
- entry_for_key@Base 0.92
  fiu_disable@Base 0.12
  fiu_enable@Base 0.12
  fiu_enable_external@Base 0.12
@@ -20,18 +10,3 @@ libfiu.so.0 libfiu0 #MINVER#
  fiu_init@Base 0.12
  fiu_rc_fifo@Base 0.12
  fiu_rc_string@Base 0.90
- get_backtrace@Base 0.90
- get_func_addr@Base 0.90
- get_func_end@Base 0.90
- get_func_start@Base 0.90
- hash_create@Base 0.92
- hash_del@Base 0.92
- hash_free@Base 0.92
- hash_get@Base 0.92
- hash_set@Base 0.92
- rec_count@Base 0.12
- wtable_create@Base 0.92
- wtable_del@Base 0.92
- wtable_free@Base 0.92
- wtable_get@Base 0.92
- wtable_set@Base 0.92
