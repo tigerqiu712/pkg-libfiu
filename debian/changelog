@@ -1,10 +1,10 @@
-libfiu (0.94-2) UNRELEASED; urgency=medium
+libfiu (0.94-2) unstable; urgency=medium
 
   * Don't hide compiler warnings by passing V=1 to upstream Makefiles.
   * Rename buildvers -> PYTHON2_VERSIONS, etc.
   * Apply upstream patch to fix FTBFS in tests on amd64.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 16 Aug 2015 07:48:37 +0200
+ -- Chris Lamb <lamby@debian.org>  Sun, 16 Aug 2015 13:42:18 +0200
 
 libfiu (0.94-1) unstable; urgency=medium
 
