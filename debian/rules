@@ -14,7 +14,7 @@ doc/%.html: doc/%.rst
 	rst2html $< > $@
 
 override_dh_auto_build: $(DOCS)
-	dh_auto_build
+	dh_auto_build -- V=1
 	cd bindings/python \
 	set -e && for i in $(buildvers); do \
 	  python$$i ./setup.py build; \
@@ -23,6 +23,9 @@ override_dh_auto_build: $(DOCS)
 	set -e && for i in $(build3vers); do \
 	  python$$i ./setup.py build; \
 	done
+
+override_dh_auto_test:
+	dh_auto_test -- V=1
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr PLIBPATH=/usr/lib/fiu
