@@ -1,9 +1,9 @@
-libfiu (0.94-3) UNRELEASED; urgency=medium
+libfiu (0.94-3) unstable; urgency=medium
 
   * Pass LC_ALL=C when running dh_auto_test to avoid FTBFS under exotic locales
     (eg. fr_CH.UTF-8).
 
- -- Chris Lamb <lamby@debian.org>  Tue, 22 Sep 2015 15:50:57 +0100
+ -- Chris Lamb <lamby@debian.org>  Tue, 22 Sep 2015 15:54:19 +0100
 
 libfiu (0.94-2) unstable; urgency=medium
 
