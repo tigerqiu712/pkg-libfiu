@@ -2,11 +2,12 @@ Source: libfiu
 Section: libs
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
-Build-Depends: debhelper (>= 9),
-               dh-python,
-               python-all-dev,
-               python-docutils,
-               python3-all-dev
+Build-Depends:
+ debhelper (>= 9),
+ dh-python,
+ python-all-dev,
+ python-docutils,
+ python3-all-dev
 Standards-Version: 3.9.6
 Homepage: http://blitiri.com.ar/p/libfiu/
 Vcs-Git: git://github.com/lamby/pkg-libfiu.git
@@ -14,7 +15,9 @@ Vcs-Browser: https://github.com/lamby/pkg-libfiu
 
 Package: libfiu0
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: userspace fault injection framework
  libfiu is a C library for fault injection. It provides functions to mark
  "points of failure" inside your code (the "core API"), and functions to
@@ -26,7 +29,10 @@ Description: userspace fault injection framework
 Package: fiu-utils
 Section: devel
 Architecture: any
-Depends: libfiu0 (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ libfiu0 (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: userspace fault injection framework (utilities)
  libfiu is a C library for fault injection. It provides functions to mark
  "points of failure" inside your code (the "core API"), and functions to
@@ -37,7 +43,10 @@ Description: userspace fault injection framework (utilities)
 Package: libfiu-dev
 Section: libdevel
 Architecture: any
-Depends: libfiu0 (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ libfiu0 (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: userspace fault injection framework (development libraries)
  libfiu is a C library for fault injection. It provides functions to mark
  "points of failure" inside your code (the "core API"), and functions to
@@ -49,10 +58,11 @@ Description: userspace fault injection framework (development libraries)
 Package: python-fiu
 Section: python
 Architecture: any
-Depends: libfiu0 (= ${binary:Version}),
-         ${misc:Depends},
-         ${python:Depends},
-         ${shlibs:Depends}
+Depends:
+ libfiu0 (= ${binary:Version}),
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends}
 Description: userspace fault injection framework (Python bindings)
  libfiu is a C library for fault injection. It provides functions to mark
  "points of failure" inside your code (the "core API"), and functions to
@@ -63,10 +73,11 @@ Description: userspace fault injection framework (Python bindings)
 Package: python3-fiu
 Section: python
 Architecture: any
-Depends: libfiu0 (= ${binary:Version}),
-         ${misc:Depends},
-         ${python3:Depends},
-         ${shlibs:Depends}
+Depends:
+ libfiu0 (= ${binary:Version}),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends}
 Description: userspace fault injection framework (Python 3 bindings)
  libfiu is a C library for fault injection. It provides functions to mark
  "points of failure" inside your code (the "core API"), and functions to
