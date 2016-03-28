@@ -10,7 +10,7 @@ Build-Depends:
  python3-all-dev
 Standards-Version: 3.9.6
 Homepage: http://blitiri.com.ar/p/libfiu/
-Vcs-Git: git://github.com/lamby/pkg-libfiu.git
+Vcs-Git: https://github.com/lamby/pkg-libfiu
 Vcs-Browser: https://github.com/lamby/pkg-libfiu
 
 Package: libfiu0

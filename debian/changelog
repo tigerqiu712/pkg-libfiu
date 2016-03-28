@@ -4,6 +4,7 @@ libfiu (0.94-4) UNRELEASED; urgency=medium
   * Add debian/patches/0002-ld-as-needed.patch from Logan Rosen
     <logan@ubuntu.com>: Move libraries after files that
     need them to fix FTBFS with ld --as-needed. (Closes: #819373)
+  * Move to HTTPS URI for Vcs-Git.
 
  -- Chris Lamb <lamby@debian.org>  Wed, 02 Dec 2015 19:03:01 +0200
 
