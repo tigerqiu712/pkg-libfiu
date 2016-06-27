@@ -29,6 +29,7 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr PLIBPATH=/usr/lib/fiu
+	ln -sf $(CURDIR)/debian/tmp/usr/lib/libfiu.so.*.* $(CURDIR)/debian/tmp/usr/lib/libfiu.so
 	cd bindings/python \
 	set -e && for i in $(PYTHON2_VERSIONS); do \
 	  python$$i ./setup.py install --root=$(CURDIR)/debian/python-fiu --no-compile -O0 --install-layout=deb; \
