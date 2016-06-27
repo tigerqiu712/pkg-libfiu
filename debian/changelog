@@ -1,6 +1,6 @@
 libfiu (0.94-5) UNRELEASED; urgency=medium
 
-  * Bump Standards-Version to 3.9.7.
+  * Bump Standards-Version to 3.9.8.
   * Install /usr/lib/libfiu.so symlink to appease lintian.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 27 Jun 2016 16:21:37 +0200

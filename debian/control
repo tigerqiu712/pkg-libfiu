@@ -8,7 +8,7 @@ Build-Depends:
  python-all-dev,
  python-docutils,
  python3-all-dev
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 Homepage: http://blitiri.com.ar/p/libfiu/
 Vcs-Git: https://github.com/lamby/pkg-libfiu
 Vcs-Browser: https://github.com/lamby/pkg-libfiu
