@@ -3,7 +3,7 @@ libfiu (0.94-6) unstable; urgency=medium
   * Drop /usr/lib/libfiu.so symlink in libfiu0 package and add override.
     (Closes: #828828)
 
- -- Chris Lamb <lamby@debian.org>  Tue, 28 Jun 2016 10:42:14 +0200
+ -- Chris Lamb <lamby@debian.org>  Tue, 28 Jun 2016 10:51:01 +0200
 
 libfiu (0.94-5) unstable; urgency=medium
 
