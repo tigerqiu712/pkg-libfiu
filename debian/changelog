@@ -1,9 +1,9 @@
-libfiu (0.94-7) UNRELEASED; urgency=medium
+libfiu (0.94-7) unstable; urgency=medium
 
   * Actually drop /usr/lib/libfiu.so symlink in libfiu0 package.
     (Closes: #828828)
 
- -- Chris Lamb <lamby@debian.org>  Wed, 29 Jun 2016 14:59:06 +0200
+ -- Chris Lamb <lamby@debian.org>  Wed, 29 Jun 2016 14:59:41 +0200
 
 libfiu (0.94-6) unstable; urgency=medium
 
