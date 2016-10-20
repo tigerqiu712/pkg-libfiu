@@ -1,3 +1,9 @@
+libfiu (0.94-8) UNRELEASED; urgency=medium
+
+  * Fix FTBFS under bash due to lack of '&&' in debian/rules.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 20 Oct 2016 16:27:21 +0200
+
 libfiu (0.94-7) unstable; urgency=medium
 
   * Actually drop /usr/lib/libfiu.so symlink in libfiu0 package.

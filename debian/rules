@@ -15,11 +15,11 @@ doc/%.html: doc/%.rst
 
 override_dh_auto_build: $(DOCS)
 	dh_auto_build -- V=1
-	cd bindings/python \
+	cd bindings/python && \
 	set -e && for i in $(PYTHON2_VERSIONS); do \
 	  python$$i ./setup.py build; \
 	done
-	cd bindings/python \
+	cd bindings/python && \
 	set -e && for i in $(PYTHON3_VERSIONS); do \
 	  python$$i ./setup.py build; \
 	done
@@ -29,11 +29,11 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr DESTDIR=/usr PLIBPATH=/usr/lib/fiu
-	cd bindings/python \
+	cd bindings/python && \
 	set -e && for i in $(PYTHON2_VERSIONS); do \
 	  python$$i ./setup.py install --root=$(CURDIR)/debian/python-fiu --no-compile -O0 --install-layout=deb; \
 	done
-	cd bindings/python \
+	cd bindings/python && \
 	set -e && for i in $(PYTHON3_VERSIONS); do \
 	  python$$i ./setup.py install --root=$(CURDIR)/debian/python3-fiu --no-compile -O0 --install-layout=deb; \
 	done
