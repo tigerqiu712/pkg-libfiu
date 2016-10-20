@@ -1,8 +1,8 @@
-libfiu (0.94-8) UNRELEASED; urgency=medium
+libfiu (0.94-8) unstable; urgency=medium
 
   * Fix FTBFS under bash due to lack of '&&' in debian/rules.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 20 Oct 2016 16:27:21 +0200
+ -- Chris Lamb <lamby@debian.org>  Thu, 20 Oct 2016 16:29:51 +0200
 
 libfiu (0.94-7) unstable; urgency=medium
 
