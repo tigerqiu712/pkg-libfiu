@@ -1,10 +1,10 @@
-libfiu (0.94-9) UNRELEASED; urgency=medium
+libfiu (0.94-9) unstable; urgency=medium
 
   * Run "gbp pq import && gpq pq export" to refresh patches.
   * Add 0003-Sort-modules-to-ensure-reproducible-order-in-binary.patch to try
     to ensure a reproducible build for modules.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 23 Oct 2016 13:27:54 +0200
+ -- Chris Lamb <lamby@debian.org>  Sun, 23 Oct 2016 13:30:26 +0200
 
 libfiu (0.94-8) unstable; urgency=medium
 
