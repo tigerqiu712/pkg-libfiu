@@ -1,0 +1,26 @@
+From: Chris Lamb <lamby@debian.org>
+Date: Sun, 23 Oct 2016 13:28:53 +0200
+Subject: Sort modules to ensure reproducible order in binary.
+
+---
+ preload/posix/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/preload/posix/Makefile b/preload/posix/Makefile
+index 4355829..d63ef5d 100644
+--- a/preload/posix/Makefile
++++ b/preload/posix/Makefile
+@@ -24,11 +24,11 @@ PREFIX=/usr/local
+ INSTALL=install
+ 
+ 
+-MODS = $(wildcard modules/*.mod)
++MODS = $(sort $(wildcard modules/*.mod))
+ GEN_C = $(addsuffix .c,$(MODS))
+ GEN_OBJS = $(addsuffix .o,$(MODS))
+ GEN_FL = $(addsuffix .fl,$(MODS))
+-CUSTOM_OBJS = $(patsubst %.c,%.o,$(wildcard modules/*.custom.c))
++CUSTOM_OBJS = $(patsubst %.c,%.o,$(sort $(wildcard modules/*.custom.c)))
+ OBJS = codegen.o $(GEN_OBJS) $(CUSTOM_OBJS)
+ 
+ 
