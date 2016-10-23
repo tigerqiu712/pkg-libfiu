@@ -1,3 +1,9 @@
+libfiu (0.94-9) UNRELEASED; urgency=medium
+
+  * Run "gbp pq import && gpq pq export" to refresh patches.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 23 Oct 2016 13:27:54 +0200
+
 libfiu (0.94-8) unstable; urgency=medium
 
   * Fix FTBFS under bash due to lack of '&&' in debian/rules.

@@ -1,9 +1,16 @@
-Description: Move libraries after files that need them to fix FTBFS with ld --as-needed.
-Author: Logan Rosen <logan@ubuntu.com>
+From: Chris Lamb <lamby@debian.org>
+Date: Sun, 23 Oct 2016 13:27:42 +0200
+Subject: ld-as-needed
 
+---
+ tests/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/Makefile b/tests/Makefile
+index ad754ac..c4a63ed 100644
 --- a/tests/Makefile
 +++ b/tests/Makefile
-@@ -64,8 +64,8 @@
+@@ -64,8 +64,8 @@ test-%: test-%.c build-flags
  #    direct jumps, which leaves caller information out of the stack frame and
  #    makes functions not appear in the backtrace. We disable it.
  test-enable_stac%: test-enable_stac%.c build-flags

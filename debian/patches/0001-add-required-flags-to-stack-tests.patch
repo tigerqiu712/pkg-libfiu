@@ -1,3 +1,7 @@
+From: Chris Lamb <lamby@debian.org>
+Date: Sun, 23 Oct 2016 13:27:42 +0200
+Subject: add-required-flags-to-stack-tests
+
 commit 6a7a14a04ace6cc9d9e6f3a31c8c055488cbaec6
 Author: Alberto Bertogli <albertito@blitiri.com.ar>
 Date:   Sat Aug 15 22:16:37 2015 +0100
@@ -20,6 +24,9 @@ Date:   Sat Aug 15 22:16:37 2015 +0100
     
     It also avoids generating the intermediate .o because they're not particularly
     useful.
+---
+ tests/Makefile | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/tests/Makefile b/tests/Makefile
 index 5d8ec6e..ad754ac 100644
