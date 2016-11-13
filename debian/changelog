@@ -1,3 +1,9 @@
+libfiu (0.94-10) UNRELEASED; urgency=medium
+
+  * Add a simple autopkgtest smoke test.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 13 Nov 2016 10:07:50 +0000
+
 libfiu (0.94-9) unstable; urgency=medium
 
   * Run "gbp pq import && gpq pq export" to refresh patches.

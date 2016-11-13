@@ -1,0 +1,2 @@
+Depends: @
+Test-Command: fiu-run -x -c 'enable name=posix/io/net/connect' /bin/true
