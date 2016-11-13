@@ -1,8 +1,8 @@
-libfiu (0.94-10) UNRELEASED; urgency=medium
+libfiu (0.94-10) unstable; urgency=medium
 
   * Add a simple autopkgtest smoke test.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 13 Nov 2016 10:07:50 +0000
+ -- Chris Lamb <lamby@debian.org>  Sun, 13 Nov 2016 10:09:27 +0000
 
 libfiu (0.94-9) unstable; urgency=medium
 
