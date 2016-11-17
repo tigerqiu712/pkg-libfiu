@@ -1,8 +1,11 @@
-Author: Alberto Bertogli <albertito@blitiri.com.ar>
-Download: http://blitiri.com.ar/p/libfiu/
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: Alberto Bertogli <albertito@blitiri.com.ar>
+Upstream-Name: libfiu
+Source: http://blitiri.com.ar/p/libfiu/
 
 Files: *
-License: BOLA Buena Onda License Agreement (v1.0)
+Copyright: © Alberto Bertogli <albertito@blitiri.com.ar>
+License: BOLA
  This work is provided 'as-is', without any express or implied warranty. In no
  event will the authors be held liable for any damages arising from the use of
  this work.
@@ -25,7 +28,7 @@ License: BOLA Buena Onda License Agreement (v1.0)
  Make the world a better place: be "Buena onda".
 
 Files: debian/*
-Copyright: © 2009 Chris Lamb <chris@chris-lamb.co.uk>
+Copyright: © 2009-2016 Chris Lamb <chris@chris-lamb.co.uk>
 License: GPL-3+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
