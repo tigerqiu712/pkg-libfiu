@@ -1,2 +1,15 @@
+# Test that fiu-run executes, without blocking the C call.
 Depends: @
-Test-Command: fiu-run -x -c 'enable name=posix/io/net/connect' /bin/true
+Test-Command: fiu-run -x -c 'enable name=posix/io/*' /bin/true
+
+# Test that fiu-run actually blocks the C call.
+Depends: @
+Test-Command: ! fiu-run -x -c 'enable name=posix/io/*' ls
+
+# Smoke test the Python 2 module.
+Depends: @
+Test-Command: python -c "import fiu; fiu.enable(\"p1\"); assert fiu.fail(\"p1\")"
+
+# Smoke test the Python 3 module.
+Depends: @
+Test-Command: python3 -c "import fiu; fiu.enable(\"p1\"); assert fiu.fail(\"p1\")"
