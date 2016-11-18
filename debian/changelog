@@ -1,8 +1,8 @@
-libfiu (0.95-3) UNRELEASED; urgency=medium
+libfiu (0.95-3) unstable; urgency=medium
 
   * Use /bin/ls over "ls" in autopkgtest.
 
- -- Chris Lamb <lamby@debian.org>  Fri, 18 Nov 2016 09:22:49 +0100
+ -- Chris Lamb <lamby@debian.org>  Fri, 18 Nov 2016 09:47:22 +0100
 
 libfiu (0.95-2) unstable; urgency=medium
 
