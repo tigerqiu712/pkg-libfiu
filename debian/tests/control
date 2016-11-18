@@ -4,7 +4,7 @@ Test-Command: fiu-run -x -c 'enable name=posix/io/*' /bin/true
 
 # Test that fiu-run actually blocks the C call.
 Depends: @
-Test-Command: ! fiu-run -x -c 'enable name=posix/io/*' ls
+Test-Command: ! fiu-run -x -c 'enable name=posix/io/*' /bin/ls
 
 # Smoke test the Python 2 module.
 Depends: @
